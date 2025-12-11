@@ -1,0 +1,837 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Model Analysis Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+      }
+
+      body.dark {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: #f0f2f5;
+      }
+
+      body.dark * {
+        color: #f0f2f5;
+      }
+
+      body.dark h1, body.dark h2, body.dark h3, body.dark h4, body.dark h5, body.dark h6 {
+        color: #f0f2f5;
+      }
+
+      body.dark p {
+        color: #f0f2f5;
+      }
+
+      body.dark label {
+        color: #f0f2f5;
+      }
+
+      .navbar {
+        background: linear-gradient(90deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95)) !important;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-brand {
+        color: white !important;
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .dashboard-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 15px;
+        padding: 40px;
+        margin-bottom: 30px;
+        box-shadow: 0 15px 45px rgba(102, 126, 234, 0.3);
+      }
+
+      body.dark .dashboard-header {
+        background: linear-gradient(135deg, #4a5f8e 0%, #5a3f7a 100%);
+        color: #f0f2f5;
+      }
+
+      .dashboard-header h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 10px;
+        color: white;
+      }
+
+      body.dark .dashboard-header h1 {
+        color: #f0f2f5;
+      }
+
+      .dashboard-header p {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 1.1rem;
+      }
+
+      body.dark .dashboard-header p {
+        color: rgba(240, 242, 245, 0.9);
+      }
+
+      .filter-card {
+        background: white;
+        border: none;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+      }
+
+      body.dark .filter-card {
+        background: #1a2a3e;
+        color: #f0f2f5;
+        border: 1px solid #4a5a7a;
+      }
+
+      .filter-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 20px;
+        align-items: flex-end;
+      }
+
+      @media (max-width: 768px) {
+        .filter-row {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .form-label {
+        color: #667eea;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        margin-bottom: 10px;
+      }
+
+      body.dark .form-label {
+        color: #a0aec0;
+      }
+      
+
+      body.dark .form-label {
+        color: #a0aec0;
+      }
+
+      .form-select {
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 12px;
+        transition: all 0.3s ease;
+      }
+
+      body.dark .form-select {
+        background: #2a2a3e;
+        border: 2px solid #4a4a6a;
+        color: #f0f2f5;
+      }
+
+      body.dark .form-select option {
+        background: #2a2a3e;
+        color: #f0f2f5;
+      }
+
+      .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+      }
+
+      .btn-load {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 12px 32px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-load:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+      }
+
+      .loading-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 400px;
+      }
+
+      .chart-card {
+        background: white;
+        border: none;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        margin-bottom: 30px;
+      }
+
+      body.dark .chart-card {
+        background: #1a2a3e;
+        color: #f0f2f5;
+        border: 1px solid #4a5a7a;
+      }
+
+      .chart-header {
+        border-bottom: 3px solid;
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+        color: var(--text);
+      }
+
+      .chart-header.temp {
+        border-bottom-color: #FF6B6B;
+      }
+
+      .chart-header.humidity {
+        border-bottom-color: #4ECDC4;
+      }
+
+      .chart-header h5 {
+        font-weight: 700;
+        margin: 0;
+        color: var(--text);
+      }
+
+      body.dark .chart-header h5 {
+        color: #f0f2f5;
+      }
+
+      body.dark .chart-header {
+        color: #f0f2f5;
+      }
+
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .metric-box {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+      }
+
+      body.dark .metric-box {
+        background: linear-gradient(135deg, #4a5f8e 0%, #5a3f7a 100%);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+      }
+
+      .metric-label {
+        font-size: 0.9rem;
+        opacity: 0.9;
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+      }
+
+      .metric-value {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-top: 10px;
+      }
+
+      .error-alert {
+        background: #fee;
+        border: 2px solid #FF6B6B;
+        color: #c33;
+        border-radius: 10px;
+        padding: 20px;
+        display: none;
+      }
+
+      body.dark .error-alert {
+        background: #3a2a2a;
+        border: 2px solid #ff6b6b;
+        color: #ff9999;
+      }
+
+      .no-data {
+        text-align: center;
+        padding: 60px 20px;
+        color: #a0aec0;
+      }
+
+      body.dark .no-data {
+        color: #ccc;
+      }
+
+      .no-data i {
+        font-size: 4rem;
+        margin-bottom: 20px;
+        opacity: 0.5;
+      }
+
+      .text-muted {
+        color: #666666 !important;
+      }
+
+      body.dark .text-muted {
+        color: #b0b8c1 !important;
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+      }
+
+      .spinner-border {
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+
+      /* Legend styling for both light and dark modes */
+      .chart-legend {
+        display: flex;
+        gap: 30px;
+        margin-top: 15px;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.95rem;
+      }
+
+      .legend-label {
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      body.dark .legend-label {
+        color: #e2e8f0;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/"><i class="fas fa-cloud"></i> WeatherML</a>
+        <div class="d-flex align-items-center gap-2">
+          <button id="themeToggle" class="btn btn-light btn-sm me-2" style="border-radius: 50%; width: 40px; height: 40px;">
+            <i class="fas fa-moon"></i>
+          </button>
+          <a class="btn btn-light btn-sm" href="/" title="Back to prediction form">
+            <i class="fas fa-arrow-left me-1"></i> Back
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container-fluid py-5">
+      <!-- Header -->
+      <div class="container">
+        <div class="dashboard-header">
+          <h1><i class="fas fa-chart-line"></i> Model Analysis Dashboard</h1>
+          <p class="mb-0">Analyze AI model predictions vs actual weather data</p>
+        </div>
+
+        <!-- Filter Card -->
+        <div class="filter-card">
+          <div class="filter-row">
+            <div>
+              <label for="monthSelect" class="form-label">Select Month</label>
+              <select class="form-select form-select-lg" id="monthSelect">
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+            </div>
+            <div>
+              <label for="yearSelect" class="form-label">Select Year</label>
+              <select class="form-select form-select-lg" id="yearSelect">
+                {% for year in years %}
+                  <option value="{{year}}">{{year}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div>
+              <button class="btn btn-load btn-lg" id="loadAnalysisBtn">
+                <i class="fas fa-sync-alt me-2"></i> Load
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div id="loadingIndicator" class="container" style="display:none;">
+        <div class="chart-card">
+          <div class="loading-spinner">
+            <div class="text-center">
+              <div class="spinner-border text-primary mb-3" style="width: 60px; height: 60px; border-width: 4px;" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="text-muted fs-5">Analyzing weather predictions...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error Alert -->
+      <div id="errorAlert" class="container" style="display:none;">
+        <div class="error-alert">
+          <i class="fas fa-exclamation-circle me-2"></i>
+          <span id="errorMessage"></span>
+        </div>
+      </div>
+
+      <!-- Charts Container -->
+      <div id="chartsContainer" style="display:none;">
+        <div class="container">
+          <!-- Metrics -->
+          <div class="metrics-grid" id="metricsGrid"></div>
+
+          <!-- Temperature Chart -->
+          <div class="chart-card">
+            <div class="chart-header temp">
+              <h5><i class="fas fa-temperature-half"></i> Temperature: Predicted vs Actual</h5>
+            </div>
+            <div id="tempChart" style="height: 450px;"></div>
+            <div class="chart-legend mt-3">
+              <div class="legend-item">
+                <span style="color: #667eea; font-weight: 700;">━━━</span>
+                <span class="legend-label">Blue Line: Model Predictions</span>
+              </div>
+              <div class="legend-item">
+                <span style="color: #FF6B6B; font-size: 1.5rem; line-height: 1;">●</span>
+                <span class="legend-label">Red Dots: Actual Temperature</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Humidity Chart -->
+          <div class="chart-card">
+            <div class="chart-header humidity">
+              <h5><i class="fas fa-droplet"></i> Humidity: Predicted vs Actual</h5>
+            </div>
+            <div id="humChart" style="height: 450px;"></div>
+            <div class="chart-legend mt-3">
+              <div class="legend-item">
+                <span style="color: #667eea; font-weight: 700;">━━━</span>
+                <span class="legend-label">Green Line: Model Predictions</span>
+              </div>
+              <div class="legend-item">
+                <span style="color: #4ECDC4; font-size: 1.5rem; line-height: 1;">●</span>
+                <span class="legend-label">Orange Dots: Actual Humidity</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Data -->
+      <div id="noDataContainer" style="display:none;">
+        <div class="container">
+          <div class="chart-card">
+            <div class="no-data">
+              <i class="fas fa-inbox"></i>
+              <h5>No data available</h5>
+              <p>Select a month and year to view analysis</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.20.0.min.js"></script>
+    <script src="/static/js/main.js"></script>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const loadBtn = document.getElementById('loadAnalysisBtn');
+        const monthSelect = document.getElementById('monthSelect');
+        const yearSelect = document.getElementById('yearSelect');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const errorAlert = document.getElementById('errorAlert');
+        const errorMessage = document.getElementById('errorMessage');
+        const chartsContainer = document.getElementById('chartsContainer');
+        const noDataContainer = document.getElementById('noDataContainer');
+
+        // Set default to current date
+        const now = new Date();
+        monthSelect.value = now.getMonth() + 1;
+        yearSelect.value = now.getFullYear();
+
+        loadBtn.addEventListener('click', async function() {
+          const month = monthSelect.value;
+          const year = yearSelect.value;
+
+          loadingIndicator.style.display = 'block';
+          chartsContainer.style.display = 'none';
+          errorAlert.style.display = 'none';
+          noDataContainer.style.display = 'none';
+
+          try {
+            const response = await fetch('/api/analysis', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ month: month, year: year })
+            });
+
+            if (!response.ok) {
+              const error = await response.json();
+              throw new Error(error.error || 'Failed to load analysis');
+            }
+
+            const data = await response.json();
+
+            // Build metrics
+            const avgPredTemp = (data.predicted_temp.reduce((a, b) => a + b, 0) / data.predicted_temp.length).toFixed(2);
+            const avgActualTemp = data.actual_temp.filter(x => x !== null).length > 0 
+              ? (data.actual_temp.filter(x => x !== null).reduce((a, b) => a + b, 0) / data.actual_temp.filter(x => x !== null).length).toFixed(2)
+              : 'N/A';
+            
+            const avgPredHum = (data.predicted_hum.reduce((a, b) => a + b, 0) / data.predicted_hum.length).toFixed(2);
+            const avgActualHum = data.actual_hum.filter(x => x !== null).length > 0 
+              ? (data.actual_hum.filter(x => x !== null).reduce((a, b) => a + b, 0) / data.actual_hum.filter(x => x !== null).length).toFixed(2)
+              : 'N/A';
+
+            const metricsGrid = document.getElementById('metricsGrid');
+            metricsGrid.innerHTML = `
+              <div class="metric-box">
+                <div class="metric-label">Avg Predicted Temp</div>
+                <div class="metric-value">${avgPredTemp}°C</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-label">Avg Actual Temp</div>
+                <div class="metric-value">${avgActualTemp}°C</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-label">Avg Predicted Humidity</div>
+                <div class="metric-value">${avgPredHum}%</div>
+              </div>
+              <div class="metric-box">
+                <div class="metric-label">Avg Actual Humidity</div>
+                <div class="metric-value">${avgActualHum}%</div>
+              </div>
+            `;
+
+            // Plot Temperature Chart
+            const tempTrace1 = {
+              x: data.dates,
+              y: data.predicted_temp,
+              mode: 'lines',
+              name: 'Predicted',
+              line: { color: '#667eea', width: 3 },
+              hovertemplate: '<b>Predicted</b><br>Date: %{x}<br>Temp: %{y:.1f}°C<extra></extra>'
+            };
+
+            const tempTrace2 = {
+              x: data.dates,
+              y: data.actual_temp,
+              mode: 'markers',
+              name: 'Actual',
+              marker: { color: '#FF6B6B', size: 10, symbol: 'circle' },
+              hovertemplate: '<b>Actual</b><br>Date: %{x}<br>Temp: %{y:.1f}°C<extra></extra>'
+            };
+
+            const tempLayout = {
+              title: { text: `Temperature - ${monthSelect.options[monthSelect.selectedIndex].text} ${year}`, font: { size: 20 } },
+              xaxis: { title: 'Date', showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' },
+              yaxis: { title: 'Temperature (°C)', showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' },
+              hovermode: 'x unified',
+              margin: { t: 50, b: 50, l: 80, r: 40 },
+              plot_bgcolor: 'rgba(245, 247, 250, 0.5)',
+              paper_bgcolor: 'white',
+              font: { family: 'Arial, sans-serif', size: 12 }
+            };
+
+            Plotly.newPlot('tempChart', [tempTrace1, tempTrace2], tempLayout, { responsive: true });
+
+            // Plot Humidity Chart
+            const humTrace1 = {
+              x: data.dates,
+              y: data.predicted_hum,
+              mode: 'lines',
+              name: 'Predicted',
+              line: { color: '#667eea', width: 3 },
+              hovertemplate: '<b>Predicted</b><br>Date: %{x}<br>Humidity: %{y:.1f}%<extra></extra>'
+            };
+
+            const humTrace2 = {
+              x: data.dates,
+              y: data.actual_hum,
+              mode: 'markers',
+              name: 'Actual',
+              marker: { color: '#4ECDC4', size: 10, symbol: 'circle' },
+              hovertemplate: '<b>Actual</b><br>Date: %{x}<br>Humidity: %{y:.1f}%<extra></extra>'
+            };
+
+            const humLayout = {
+              title: { text: `Humidity - ${monthSelect.options[monthSelect.selectedIndex].text} ${year}`, font: { size: 20 } },
+              xaxis: { title: 'Date', showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' },
+              yaxis: { title: 'Humidity (%)', showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' },
+              hovermode: 'x unified',
+              margin: { t: 50, b: 50, l: 80, r: 40 },
+              plot_bgcolor: 'rgba(245, 247, 250, 0.5)',
+              paper_bgcolor: 'white',
+              font: { family: 'Arial, sans-serif', size: 12 }
+            };
+
+            Plotly.newPlot('humChart', [humTrace1, humTrace2], humLayout, { responsive: true });
+
+            chartsContainer.style.display = 'block';
+            loadingIndicator.style.display = 'none';
+
+          } catch (err) {
+            errorMessage.textContent = err.message;
+            errorAlert.style.display = 'block';
+            loadingIndicator.style.display = 'none';
+          }
+        });
+
+        // Load analysis on page load
+        loadBtn.click();
+      });
+    </script>
+  </body>
+</html>
+      
+      
+
+      <!-- Loading Indicator -->
+      <div id="loadingIndicator" style="display:none;" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2">Loading analysis data...</p>
+      </div>
+
+      <!-- Error Alert -->
+      <div id="errorAlert" class="alert alert-danger alert-dismissible fade" role="alert" style="display:none;">
+        <strong>Error:</strong> <span id="errorMessage"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+
+      <!-- Charts Container -->
+      <div id="chartsContainer" style="display:none;">
+        <div class="row g-4">
+          <!-- Temperature Chart -->
+          <div class="col-12">
+            <div class="card shadow-sm">
+              <div class="card-header bg-info text-white">
+                <h5 class="mb-0">
+                  <i class="fa-solid fa-temperature-half"></i> Temperature Prediction vs Actual
+                </h5>
+              </div>
+              <div class="card-body">
+                <div id="tempChart" style="height: 400px;"></div>
+                <p class="text-muted small mt-2">
+                  <strong>Blue line:</strong> Model Predictions | <strong>Red dots:</strong> Actual Temperature
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Humidity Chart -->
+          <div class="col-12">
+            <div class="card shadow-sm">
+              <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                  <i class="fa-solid fa-droplet"></i> Humidity Prediction vs Actual
+                </h5>
+              </div>
+              <div class="card-body">
+                <div id="humChart" style="height: 400px;"></div>
+                <p class="text-muted small mt-2">
+                  <strong>Green line:</strong> Model Predictions | <strong>Orange dots:</strong> Actual Humidity
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Statistics -->
+          <div class="col-12">
+            <div class="card shadow-sm">
+              <div class="card-header bg-success text-white">
+                <h5 class="mb-0">
+                  <i class="fa-solid fa-calculator"></i> Performance Metrics
+                </h5>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h6>Temperature</h6>
+                    <p>
+                      <strong>Predictions:</strong> <span id="tempPredCount">0</span> samples<br>
+                      <strong>Avg Predicted:</strong> <span id="tempPredAvg">-</span> °C<br>
+                      <strong>Avg Actual:</strong> <span id="tempActualAvg">-</span> °C
+                    </p>
+                  </div>
+                  <div class="col-md-6">
+                    <h6>Humidity</h6>
+                    <p>
+                      <strong>Predictions:</strong> <span id="humPredCount">0</span> samples<br>
+                      <strong>Avg Predicted:</strong> <span id="humPredAvg">-</span> %<br>
+                      <strong>Avg Actual:</strong> <span id="humActualAvg">-</span> %
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.20.0.min.js"></script>
+    <script src="/static/js/main.js"></script>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const loadBtn = document.getElementById('loadAnalysisBtn');
+        const monthSelect = document.getElementById('monthSelect');
+        const yearSelect = document.getElementById('yearSelect');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const errorAlert = document.getElementById('errorAlert');
+        const errorMessage = document.getElementById('errorMessage');
+        const chartsContainer = document.getElementById('chartsContainer');
+
+        // Set default to current date
+        const now = new Date();
+        monthSelect.value = now.getMonth() + 1;
+        yearSelect.value = now.getFullYear();
+
+        loadBtn.addEventListener('click', async function() {
+          const month = monthSelect.value;
+          const year = yearSelect.value;
+
+          loadingIndicator.style.display = 'block';
+          chartsContainer.style.display = 'none';
+          errorAlert.style.display = 'none';
+
+          try {
+            const response = await fetch('/api/analysis', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ month: month, year: year })
+            });
+
+            if (!response.ok) {
+              const error = await response.json();
+              throw new Error(error.error || 'Failed to load analysis');
+            }
+
+            const data = await response.json();
+
+            // Plot Temperature Chart
+            const tempTrace1 = {
+              x: data.dates,
+              y: data.predicted_temp,
+              mode: 'lines',
+              name: 'Predicted Temp',
+              line: { color: 'blue', width: 2 }
+            };
+
+            const tempTrace2 = {
+              x: data.dates,
+              y: data.actual_temp,
+              mode: 'markers',
+              name: 'Actual Temp',
+              marker: { color: 'red', size: 8 }
+            };
+
+            const tempLayout = {
+              title: `Temperature - ${monthSelect.options[monthSelect.selectedIndex].text} ${year}`,
+              xaxis: { title: 'Date' },
+              yaxis: { title: 'Temperature (°C)' },
+              hovermode: 'x unified',
+              margin: { t: 30, b: 30, l: 60, r: 30 }
+            };
+
+            Plotly.newPlot('tempChart', [tempTrace1, tempTrace2], tempLayout, { responsive: true });
+
+            // Plot Humidity Chart
+            const humTrace1 = {
+              x: data.dates,
+              y: data.predicted_hum,
+              mode: 'lines',
+              name: 'Predicted Humidity',
+              line: { color: 'green', width: 2 }
+            };
+
+            const humTrace2 = {
+              x: data.dates,
+              y: data.actual_hum,
+              mode: 'markers',
+              name: 'Actual Humidity',
+              marker: { color: 'orange', size: 8 }
+            };
+
+            const humLayout = {
+              title: `Humidity - ${monthSelect.options[monthSelect.selectedIndex].text} ${year}`,
+              xaxis: { title: 'Date' },
+              yaxis: { title: 'Humidity (%)' },
+              hovermode: 'x unified',
+              margin: { t: 30, b: 30, l: 60, r: 30 }
+            };
+
+            Plotly.newPlot('humChart', [humTrace1, humTrace2], humLayout, { responsive: true });
+
+            // Update statistics
+            const avgPredTemp = (data.predicted_temp.reduce((a, b) => a + b, 0) / data.predicted_temp.length).toFixed(2);
+            const avgActualTemp = data.actual_temp.filter(x => x !== null).length > 0 
+              ? (data.actual_temp.filter(x => x !== null).reduce((a, b) => a + b, 0) / data.actual_temp.filter(x => x !== null).length).toFixed(2)
+              : '-';
+            
+            const avgPredHum = (data.predicted_hum.reduce((a, b) => a + b, 0) / data.predicted_hum.length).toFixed(2);
+            const avgActualHum = data.actual_hum.filter(x => x !== null).length > 0 
+              ? (data.actual_hum.filter(x => x !== null).reduce((a, b) => a + b, 0) / data.actual_hum.filter(x => x !== null).length).toFixed(2)
+              : '-';
+
+            document.getElementById('tempPredCount').textContent = data.predicted_temp.length;
+            document.getElementById('tempPredAvg').textContent = avgPredTemp;
+            document.getElementById('tempActualAvg').textContent = avgActualTemp;
+
+            document.getElementById('humPredCount').textContent = data.predicted_hum.length;
+            document.getElementById('humPredAvg').textContent = avgPredHum;
+            document.getElementById('humActualAvg').textContent = avgActualHum;
+
+            chartsContainer.style.display = 'block';
+            loadingIndicator.style.display = 'none';
+
+          } catch (err) {
+            errorMessage.textContent = err.message;
+            errorAlert.style.display = 'block';
+            loadingIndicator.style.display = 'none';
+          }
+        });
+
+        // Load analysis on page load with current month/year
+        loadBtn.click();
+      });
+    </script>
+  </body>
+</html>

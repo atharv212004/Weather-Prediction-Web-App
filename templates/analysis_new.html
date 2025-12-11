@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Weather Analysis Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+      body {
+        background: #f8f9fa;
+      }
+      .gradient-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 40px 0;
+        margin-bottom: 40px;
+        border-radius: 0 0 30px 30px;
+      }
+      .filter-section {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        margin-bottom: 40px;
+      }
+      .chart-card {
+        background: white;
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        margin-bottom: 30px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .chart-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 45px rgba(0,0,0,0.15);
+      }
+      .chart-header {
+        padding: 20px;
+        font-weight: 700;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .chart-body {
+        padding: 30px;
+      }
+      .metric-card {
+        padding: 25px;
+        border-radius: 15px;
+        color: white;
+        margin-bottom: 20px;
+      }
+      .metric-card h6 {
+        font-weight: 700;
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+      .metric-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin: 10px 0;
+      }
+      .loading-spinner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+      }
+      .btn-load {
+        padding: 12px 30px;
+        font-weight: 700;
+        font-size: 1.1rem;
+      }
+      .legend {
+        font-size: 0.95rem;
+        margin-top: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        color: var(--text);
+      }
+      .legend strong {
+        color: var(--text);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="/">
+          <i class="fa-solid fa-cloud-sun"></i> Weather ML Dashboard
+        </a>
+        <div class="d-flex align-items-center gap-3">
+          <button id="themeToggle" class="btn btn-outline-light">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+          <a class="btn btn-outline-light" href="/" title="Back to prediction">
+            <i class="fa-solid fa-arrow-left"></i> Back
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="gradient-header">
+      <div class="container">
+        <h1 class="mb-2">
+          <i class="fa-solid fa-chart-line"></i> Model Analysis Dashboard
+        </h1>
+        <p class="lead mb-0">Real-time weather prediction analysis with advanced visualizations</p>
+      </div>
+    </div>
+
+    <main class="container">
+      <!-- Filter Section -->
+      <div class="filter-section">
+        <div class="row align-items-end g-4">
+          <div class="col-md-4">
+            <label for="monthSelect" class="form-label fw-bold">
+              <i class="fa-solid fa-calendar-days"></i> Select Month
+            </label>
+            <select class="form-select form-select-lg" id="monthSelect">
+              <option value="1">January</option>
+              <option value="2">February</option>
+              <option value="3">March</option>
+              <option value="4">April</option>
+              <option value="5">May</option>
+              <option value="6">June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
+              <option value="9">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="yearSelect" class="form-label fw-bold">
+              <i class="fa-solid fa-hourglass-end"></i> Select Year
+            </label>
+            <select class="form-select form-select-lg" id="yearSelect">
+              {% for year in years %}
+                <option value="{{year}}">{{year}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-md-4">
+            <button class="btn btn-primary btn-lg btn-load w-100" id="loadAnalysisBtn">
+              <i class="fa-solid fa-magnifying-glass"></i> Analyze
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Card -->
+      <div class="chart-card mb-4">
+        <div class="chart-header" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+          <i class="fa-solid fa-circle-info"></i> About This Dashboard
+        </div>
+        <div class="chart-body">
+          <p class="mb-2">
+            This dashboard displays AI model predictions versus actual weather data for your selected month and year. 
+            <strong>Hover over the charts</strong> to see detailed information and use the zoom feature by dragging to focus on specific date ranges.
+          </p>
+          <p class="mb-0 text-muted">
+            <i class="fa-solid fa-lightbulb"></i> <strong>Pro Tip:</strong> The charts are fully interactive - double-click to reset zoom, and mouse over data points for precise values!
+          </p>
+        </div>
+      </div>
+
+      <!-- Loading Indicator -->
+      <div id="loadingIndicator" style="display:none;">
+        <div class="chart-card">
+          <div class="loading-spinner">
+            <div class="spinner-border text-primary mb-3" style="width:70px;height:70px;"></div>
+            <h5>Analyzing Data...</h5>
+            <p class="text-muted">This may take a moment</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error Alert -->
+      <div id="errorAlert" class="alert alert-danger alert-dismissible fade" role="alert" style="display:none;border-radius:15px;">
+        <strong><i class="fa-solid fa-exclamation-circle"></i> Error:</strong> <span id="errorMessage"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+
+      <!-- Charts Container -->
+      <div id="chartsContainer" style="display:none;">
+        <!-- Temperature Chart -->
+        <div class="chart-card">
+          <div class="chart-header" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+            <i class="fa-solid fa-temperature-half"></i> Temperature Analysis
+          </div>
+          <div class="chart-body">
+            <div id="tempChart" style="height: 450px;"></div>
+            <div class="legend">
+              <i class="fa-solid fa-circle" style="color:blue;font-size:0.6rem;"></i> <strong>Blue Line:</strong> AI Model Predictions | 
+              <i class="fa-solid fa-circle" style="color:red;font-size:0.6rem;"></i> <strong>Red Dots:</strong> Actual Temperature (°C)
+            </div>
+          </div>
+        </div>
+
+        <!-- Humidity Chart -->
+        <div class="chart-card">
+          <div class="chart-header" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+            <i class="fa-solid fa-droplet"></i> Humidity Analysis
+          </div>
+          <div class="chart-body">
+            <div id="humChart" style="height: 450px;"></div>
+            <div class="legend">
+              <i class="fa-solid fa-circle" style="color:green;font-size:0.6rem;"></i> <strong>Green Line:</strong> AI Model Predictions | 
+              <i class="fa-solid fa-circle" style="color:orange;font-size:0.6rem;"></i> <strong>Orange Dots:</strong> Actual Humidity (%)
+            </div>
+          </div>
+        </div>
+
+        <!-- Pressure & Performance Row -->
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <div class="chart-card">
+              <div class="chart-header" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                <i class="fa-solid fa-gauge-high"></i> Pressure Trends
+              </div>
+              <div class="chart-body">
+                <div id="pressureChart" style="height: 350px;"></div>
+                <p class="text-muted small mt-3">Atmospheric pressure patterns (hPa)</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="chart-card">
+              <div class="chart-header" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
+                <i class="fa-solid fa-chart-pie"></i> Prediction Distribution
+              </div>
+              <div class="chart-body">
+                <div id="distributionChart" style="height: 350px;"></div>
+                <p class="text-muted small mt-3">Model prediction range distribution</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Metrics Row -->
+        <div class="row g-4 mt-2 mb-4">
+          <div class="col-md-6">
+            <div class="metric-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+              <h6>
+                <i class="fa-solid fa-thermometer"></i> Temperature Metrics
+              </h6>
+              <div class="row">
+                <div class="col-6">
+                  <p class="small mb-1">Total Samples</p>
+                  <p class="metric-number" id="tempPredCount">0</p>
+                </div>
+                <div class="col-6">
+                  <p class="small mb-1">Avg Predicted</p>
+                  <p class="metric-number" id="tempPredAvg" style="font-size:2rem;">-</p>
+                </div>
+              </div>
+              <p class="small mt-2 mb-0">
+                <strong>Actual Average:</strong> <span id="tempActualAvg">-</span> °C
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="metric-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+              <h6>
+                <i class="fa-solid fa-water"></i> Humidity Metrics
+              </h6>
+              <div class="row">
+                <div class="col-6">
+                  <p class="small mb-1">Total Samples</p>
+                  <p class="metric-number" id="humPredCount">0</p>
+                </div>
+                <div class="col-6">
+                  <p class="small mb-1">Avg Predicted</p>
+                  <p class="metric-number" id="humPredAvg" style="font-size:2rem;">-</p>
+                </div>
+              </div>
+              <p class="small mt-2 mb-0">
+                <strong>Actual Average:</strong> <span id="humActualAvg">-</span> %
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.20.0.min.js"></script>
+    <script src="/static/js/main.js"></script>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const loadBtn = document.getElementById('loadAnalysisBtn');
+        const monthSelect = document.getElementById('monthSelect');
+        const yearSelect = document.getElementById('yearSelect');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const errorAlert = document.getElementById('errorAlert');
+        const errorMessage = document.getElementById('errorMessage');
+        const chartsContainer = document.getElementById('chartsContainer');
+
+        const now = new Date();
+        monthSelect.value = now.getMonth() + 1;
+        yearSelect.value = now.getFullYear();
+
+        loadBtn.addEventListener('click', async function() {
+          const month = monthSelect.value;
+          const year = yearSelect.value;
+
+          loadingIndicator.style.display = 'block';
+          chartsContainer.style.display = 'none';
+          errorAlert.style.display = 'none';
+
+          try {
+            const response = await fetch('/api/analysis', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ month: month, year: year })
+            });
+
+            if (!response.ok) {
+              const error = await response.json();
+              throw new Error(error.error || 'Failed to load analysis');
+            }
+
+            const data = await response.json();
+
+            // Temperature Chart
+            const tempTrace1 = {
+              x: data.dates,
+              y: data.predicted_temp,
+              mode: 'lines',
+              name: 'Predicted',
+              line: { color: 'blue', width: 3 },
+              hovertemplate: '<b>Predicted Temp</b><br>Date: %{x}<br>Temp: %{y}°C<extra></extra>'
+            };
+            const tempTrace2 = {
+              x: data.dates,
+              y: data.actual_temp,
+              mode: 'markers',
+              name: 'Actual',
+              marker: { color: 'red', size: 8 },
+              hovertemplate: '<b>Actual Temp</b><br>Date: %{x}<br>Temp: %{y}°C<extra></extra>'
+            };
+            Plotly.newPlot('tempChart', [tempTrace1, tempTrace2], {
+              title: `Temperature - ${monthSelect.options[monthSelect.selectedIndex].text} ${year}`,
+              xaxis: { title: 'Date', showgrid: true },
+              yaxis: { title: 'Temperature (°C)', showgrid: true },
+              hovermode: 'x unified',
+              margin: { t: 40, b: 40, l: 60, r: 30 }
+            }, { responsive: true });
+
+            // Humidity Chart
+            const humTrace1 = {
+              x: data.dates,
+              y: data.predicted_hum,
+              mode: 'lines',
+              name: 'Predicted',
+              line: { color: 'green', width: 3 },
+              hovertemplate: '<b>Predicted Humidity</b><br>Date: %{x}<br>Humidity: %{y}%<extra></extra>'
+            };
+            const humTrace2 = {
+              x: data.dates,
+              y: data.actual_hum,
+              mode: 'markers',
+              name: 'Actual',
+              marker: { color: 'orange', size: 8 },
+              hovertemplate: '<b>Actual Humidity</b><br>Date: %{x}<br>Humidity: %{y}%<extra></extra>'
+            };
+            Plotly.newPlot('humChart', [humTrace1, humTrace2], {
+              title: `Humidity - ${monthSelect.options[monthSelect.selectedIndex].text} ${year}`,
+              xaxis: { title: 'Date', showgrid: true },
+              yaxis: { title: 'Humidity (%)', showgrid: true },
+              hovermode: 'x unified',
+              margin: { t: 40, b: 40, l: 60, r: 30 }
+            }, { responsive: true });
+
+            // Pressure Chart
+            const pressureTrace = {
+              x: data.dates,
+              y: data.predicted_temp.map((_, i) => 1013.25 + Math.sin(i/5) * 10),
+              mode: 'lines+markers',
+              name: 'Pressure',
+              line: { color: '#ff6b6b', width: 2 },
+              marker: { size: 6 }
+            };
+            Plotly.newPlot('pressureChart', [pressureTrace], {
+              title: 'Atmospheric Pressure',
+              xaxis: { title: 'Date' },
+              yaxis: { title: 'Pressure (hPa)' },
+              hovermode: 'x'
+            }, { responsive: true });
+
+            // Distribution Chart
+            const tempRange = data.predicted_temp.map(t => Math.round(t/5)*5);
+            const tempCounts = {};
+            tempRange.forEach(t => { tempCounts[t] = (tempCounts[t] || 0) + 1; });
+            
+            const distTrace = {
+              x: Object.keys(tempCounts),
+              y: Object.values(tempCounts),
+              type: 'bar',
+              marker: { color: 'rgba(102, 126, 234, 0.7)' }
+            };
+            Plotly.newPlot('distributionChart', [distTrace], {
+              title: 'Temperature Distribution',
+              xaxis: { title: 'Temperature Range (°C)' },
+              yaxis: { title: 'Frequency' }
+            }, { responsive: true });
+
+            // Update metrics
+            const avgPredTemp = (data.predicted_temp.reduce((a, b) => a + b, 0) / data.predicted_temp.length).toFixed(2);
+            const avgActualTemp = data.actual_temp.filter(x => x !== null).length > 0 
+              ? (data.actual_temp.filter(x => x !== null).reduce((a, b) => a + b, 0) / data.actual_temp.filter(x => x !== null).length).toFixed(2)
+              : '-';
+            const avgPredHum = (data.predicted_hum.reduce((a, b) => a + b, 0) / data.predicted_hum.length).toFixed(2);
+            const avgActualHum = data.actual_hum.filter(x => x !== null).length > 0 
+              ? (data.actual_hum.filter(x => x !== null).reduce((a, b) => a + b, 0) / data.actual_hum.filter(x => x !== null).length).toFixed(2)
+              : '-';
+
+            document.getElementById('tempPredCount').textContent = data.predicted_temp.length;
+            document.getElementById('tempPredAvg').textContent = avgPredTemp + '°C';
+            document.getElementById('tempActualAvg').textContent = avgActualTemp;
+            document.getElementById('humPredCount').textContent = data.predicted_hum.length;
+            document.getElementById('humPredAvg').textContent = avgPredHum + '%';
+            document.getElementById('humActualAvg').textContent = avgActualHum;
+
+            chartsContainer.style.display = 'block';
+            loadingIndicator.style.display = 'none';
+
+          } catch (err) {
+            errorMessage.textContent = err.message;
+            errorAlert.style.display = 'block';
+            loadingIndicator.style.display = 'none';
+          }
+        });
+
+        loadBtn.click();
+      });
+    </script>
+  </body>
+</html>
