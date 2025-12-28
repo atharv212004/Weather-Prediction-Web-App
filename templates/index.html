@@ -10,23 +10,45 @@
     <link rel="stylesheet" href="/static/css/style.css">
     <style>
       :root {
-        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        --success-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --primary-gradient: linear-gradient(135deg, #4A90E2 0%, #5BA3F5 100%);
+        --temp-gradient: linear-gradient(135deg, #FF6B35 0%, #FF8C5A 100%);
+        --humidity-gradient: linear-gradient(135deg, #4ECDC4 0%, #6EDDD6 100%);
       }
       
       body {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        background: linear-gradient(135deg, #E8F4FD 0%, #D0E8F8 100%);
         min-height: 100vh;
+        color: #1a1a1a;
       }
 
       body.dark {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        background: linear-gradient(135deg, #0F1F3A 0%, #1E3A5F 100%);
+        color: #FFFFFF;
+      }
+
+      body.dark * {
+        color: #FFFFFF;
+      }
+
+      body.dark p, body.dark span, body.dark small, body.dark label {
+        color: #E0F0FF;
+      }
+
+      body.dark h1, body.dark h2, body.dark h3, body.dark h4, body.dark h5, body.dark h6 {
+        color: #FFFFFF;
       }
 
       .navbar {
-        background: linear-gradient(90deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95)) !important;
-        backdrop-filter: blur(10px);
+        background: linear-gradient(90deg, rgba(74, 144, 226, 0.85), rgba(91, 163, 245, 0.85)) !important;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      body.dark .navbar {
+        background: linear-gradient(90deg, rgba(45, 74, 107, 0.7), rgba(58, 90, 122, 0.7)) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       }
 
       .navbar-brand {
@@ -37,14 +59,22 @@
       }
 
       .hero-card {
-        background: var(--primary-gradient);
+        background: linear-gradient(135deg, rgba(74, 144, 226, 0.9), rgba(91, 163, 245, 0.9));
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         color: white;
-        border: none;
+        border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 20px;
         padding: 40px;
         margin-bottom: 30px;
-        box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 20px 60px rgba(74, 144, 226, 0.3);
         animation: slideInDown 0.6s ease-out;
+      }
+
+      body.dark .hero-card {
+        background: linear-gradient(135deg, rgba(45, 74, 107, 0.6), rgba(58, 90, 122, 0.6));
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
       }
 
       .hero-card h1 {
@@ -59,21 +89,35 @@
       }
 
       .form-card {
-        background: white;
-        border: none;
-        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
         padding: 40px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
         animation: slideInUp 0.6s ease-out;
       }
 
       body.dark .form-card {
-        background: #2a2a3e;
-        color: white;
+        background: rgba(45, 74, 107, 0.5);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        color: #FFFFFF;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      }
+
+      body.dark .form-card * {
+        color: #FFFFFF;
+      }
+
+      body.dark .form-card p, body.dark .form-card span, body.dark .form-card small {
+        color: #E0F0FF;
       }
 
       .form-label {
-        color: #667eea;
+        color: #4A90E2;
         font-weight: 600;
         margin-bottom: 12px;
         text-transform: uppercase;
@@ -82,7 +126,8 @@
       }
 
       body.dark .form-label {
-        color: #a0aec0;
+        color: #E0F0FF;
+        opacity: 1;
       }
 
       .form-control, .form-select {
@@ -94,14 +139,27 @@
       }
 
       body.dark .form-control, body.dark .form-select {
-        background: #3a3a4e;
-        border: 2px solid #4a4a6a;
-        color: white;
+        background: rgba(45, 74, 107, 0.6);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        color: #FFFFFF;
+        opacity: 1;
+      }
+
+      body.dark .form-control::placeholder, body.dark .form-select::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+        opacity: 1;
       }
 
       .form-control:focus, .form-select:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        border-color: #4A90E2;
+        box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+      }
+
+      body.dark .form-control:focus, body.dark .form-select:focus {
+        border-color: #5BA3F5;
+        box-shadow: 0 0 0 0.2rem rgba(91, 163, 245, 0.25);
       }
 
       .input-group-text {
@@ -111,8 +169,20 @@
       }
 
       body.dark .input-group-text {
-        border: 2px solid #4a4a6a;
+        background: #2D4A6B;
+        border: 2px solid #3A5A7A;
         border-right: none;
+        color: #F0F8FF;
+      }
+
+      .input-group .btn {
+        border-left: none;
+        border-radius: 0 10px 10px 0;
+        white-space: nowrap;
+      }
+
+      .input-group .form-control {
+        border-radius: 10px 0 0 10px;
       }
 
       .btn-primary {
@@ -131,14 +201,24 @@
 
       .btn-outline-secondary {
         border: 2px solid #cbd5e0;
-        color: #667eea;
+        color: #4A90E2;
         border-radius: 8px;
       }
 
+      body.dark .btn-outline-secondary {
+        border: 2px solid #3A5A7A;
+        color: #5BA3F5;
+      }
+
       .btn-outline-secondary:hover {
-        background: #667eea;
-        border-color: #667eea;
+        background: #4A90E2;
+        border-color: #4A90E2;
         color: white;
+      }
+
+      body.dark .btn-outline-secondary:hover {
+        background: #5BA3F5;
+        border-color: #5BA3F5;
       }
 
       .quick-buttons {
@@ -153,16 +233,16 @@
         border: 2px solid #e2e8f0;
         border-radius: 8px;
         background: white;
-        color: #667eea;
+        color: #4A90E2;
         font-weight: 600;
         cursor: pointer;
         transition: all 0.3s ease;
       }
 
       body.dark .quick-btn {
-        background: #3a3a4e;
-        border: 2px solid #4a4a6a;
-        color: #a0aec0;
+        background: #2D4A6B;
+        border: 2px solid #3A5A7A;
+        color: #B8D4F0;
       }
 
       .quick-btn:hover {
@@ -181,33 +261,39 @@
       }
 
       body.dark .feature-highlight {
-        border-top: 2px solid #4a4a6a;
+        border-top: 2px solid #3A5A7A;
       }
 
       .feature-icon {
         font-size: 2rem;
-        color: #667eea;
+        color: #4A90E2;
         margin-right: 15px;
       }
 
+      body.dark .feature-icon {
+        color: #5BA3F5;
+      }
+
       .feature-text h6 {
-        color: #2d3748;
+        color: #1a1a1a;
         font-weight: 700;
         margin-bottom: 5px;
       }
 
       body.dark .feature-text h6 {
-        color: #e2e8f0;
+        color: #FFFFFF;
+        opacity: 1;
       }
 
       .feature-text p {
-        color: #718096;
+        color: #555555;
         margin-bottom: 0;
         font-size: 0.9rem;
       }
 
       body.dark .feature-text p {
-        color: #a0aec0;
+        color: #E0F0FF;
+        opacity: 1;
       }
 
       @keyframes slideInDown {
@@ -238,10 +324,10 @@
       <div class="container-fluid">
         <a class="navbar-brand" href="/"><i class="fas fa-cloud"></i> WeatherML</a>
         <div class="d-flex align-items-center gap-2">
-          <button id="themeToggle" class="btn btn-light btn-sm me-2" style="border-radius: 50%; width: 40px; height: 40px;">
+          <button id="themeToggle" class="btn btn-light btn-sm me-2 glass" style="border-radius: 50%; width: 40px; height: 40px; border: 1px solid rgba(255, 255, 255, 0.3);">
             <i class="fas fa-moon"></i>
           </button>
-          <a class="btn btn-light btn-sm" href="/analysis" style="border-radius: 8px;">
+          <a class="btn btn-light btn-sm glass" href="/analysis" style="border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.3);">
             <i class="fas fa-chart-line me-1"></i> Analysis
           </a>
         </div>
@@ -279,10 +365,21 @@
                   <label for="location" class="form-label">
                     📍 Location <span class="badge bg-danger">Required</span>
                   </label>
-                  <input type="text" class="form-control form-control-lg" id="location" name="location" placeholder="Enter city name (e.g., New York, London, Tokyo)" aria-label="location" required>
+                  <div class="input-group">
+                    <input type="text" class="form-control form-control-lg" id="location" name="location" placeholder="Enter city name (e.g., New York, London, Tokyo)" aria-label="location" required>
+                    <button type="button" class="btn btn-outline-secondary" id="detectLocationBtn">
+                      <i class="fas fa-map-marker-alt"></i> Use My Location
+                    </button>
+                  </div>
                   <small class="text-muted d-block mt-2">
-                    <i class="fas fa-info-circle"></i> Start typing a city name to auto-fetch coordinates
+                    <i class="fas fa-info-circle"></i> Start typing a city name to auto-fetch coordinates or click "Use My Location"
                   </small>
+                  <style>
+                    body.dark .text-muted {
+                      color: #E0F0FF !important;
+                      opacity: 0.9 !important;
+                    }
+                  </style>
                 </div>
 
                 <!-- Date Section -->

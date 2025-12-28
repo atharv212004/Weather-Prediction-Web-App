@@ -3,7 +3,12 @@ document.addEventListener('DOMContentLoaded', function(){
   function setTheme(isDark){
     if(isDark) document.body.classList.add('dark');
     else document.body.classList.remove('dark');
-    if(themeToggle) themeToggle.textContent = isDark ? 'Light' : 'Dark';
+    if(themeToggle) {
+      const icon = themeToggle.querySelector('i');
+      if(icon) {
+        icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+      }
+    }
     localStorage.setItem('isDark', isDark ? '1' : '0');
   }
   const saved = localStorage.getItem('isDark') === '1';
@@ -67,6 +72,108 @@ document.addEventListener('DOMContentLoaded', function(){
           // Silent fail - user can still submit or use Detect button
         }
       }, 1000); // wait 1000ms after user stops typing
+    });
+  }
+
+  // Use my location button - browser geolocation API
+  const detectLocationBtn = document.getElementById('detectLocationBtn');
+  if(detectLocationBtn){
+    detectLocationBtn.addEventListener('click', ()=>{
+      if(!navigator.geolocation){
+        showToast('❌ Geolocation is not supported by your browser', 'danger');
+        return;
+      }
+      
+      detectLocationBtn.disabled = true;
+      const originalHTML = detectLocationBtn.innerHTML;
+      detectLocationBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Detecting...';
+      
+      // Set a timeout to reset button if geolocation takes too long
+      const resetTimeout = setTimeout(() => {
+        detectLocationBtn.disabled = false;
+        detectLocationBtn.innerHTML = originalHTML;
+        showToast('⏱️ Location detection is taking longer than expected. Please try again.', 'warning');
+      }, 30000); // 30 second fallback timeout
+      
+      navigator.geolocation.getCurrentPosition(
+        async (position)=>{
+          clearTimeout(resetTimeout);
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          
+          // Set coordinates immediately
+          document.getElementById('lat').value = lat.toFixed(4);
+          document.getElementById('lon').value = lon.toFixed(4);
+          
+          // Update button to show we're getting city name
+          detectLocationBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Getting city name...';
+          
+          // Reverse geocode to get city name (with timeout)
+          const geocodeTimeout = setTimeout(() => {
+            // If reverse geocoding takes too long, just use coordinates
+            document.getElementById('location').value = `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+            showToast(`✅ Location detected: ${lat.toFixed(4)}, ${lon.toFixed(4)}`, 'success');
+            detectLocationBtn.disabled = false;
+            detectLocationBtn.innerHTML = originalHTML;
+          }, 5000); // 5 second timeout for reverse geocoding
+          
+          try{
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 5000);
+            
+            const resp = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&addressdetails=1`, {
+              headers: {
+                'User-Agent': 'WeatherML-App/1.0'
+              },
+              signal: controller.signal
+            });
+            
+            clearTimeout(timeoutId);
+            clearTimeout(geocodeTimeout);
+            
+            if(resp.ok){
+              const data = await resp.json();
+              const cityName = data.address.city || data.address.town || data.address.village || data.address.county || data.address.municipality || data.display_name.split(',')[0];
+              document.getElementById('location').value = cityName;
+              showToast(`✅ Location detected: ${cityName}`, 'success');
+            } else {
+              clearTimeout(geocodeTimeout);
+              document.getElementById('location').value = `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+              showToast(`✅ Location detected: ${lat.toFixed(4)}, ${lon.toFixed(4)}`, 'success');
+            }
+          } catch(e){
+            clearTimeout(geocodeTimeout);
+            if(e.name !== 'AbortError'){
+              console.log('Reverse geocoding error:', e.message);
+            }
+            document.getElementById('location').value = `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+            showToast(`✅ Location detected: ${lat.toFixed(4)}, ${lon.toFixed(4)}`, 'success');
+          }
+          
+          detectLocationBtn.disabled = false;
+          detectLocationBtn.innerHTML = originalHTML;
+        },
+        (error)=>{
+          clearTimeout(resetTimeout);
+          detectLocationBtn.disabled = false;
+          detectLocationBtn.innerHTML = originalHTML;
+          
+          let errorMsg = '❌ Failed to get location';
+          if(error.code === 1){
+            errorMsg = '❌ Location access denied. Please enable location permissions in your browser settings.';
+          } else if(error.code === 2){
+            errorMsg = '❌ Location unavailable. Please check your GPS/network connection and try again.';
+          } else if(error.code === 3){
+            errorMsg = '⏱️ Location request timed out. Please try again or enter location manually.';
+          }
+          showToast(errorMsg, 'danger');
+        },
+        {
+          enableHighAccuracy: false, // Changed to false for faster response
+          timeout: 20000, // Increased to 20 seconds
+          maximumAge: 60000 // Accept cached location up to 1 minute old
+        }
+      );
     });
   }
 

@@ -3,21 +3,93 @@
   --text:#1a1a1a;
   --text-secondary:#555555;
   --card:#f8f9fa;
-  --primary:#0d6efd;
+  --primary:#4A90E2;
+  --primary-dark:#357ABD;
   --secondary:#6c757d;
   --success:#198754;
-  --info:#0dcaf0;
+  --info:#5BA3F5;
   --border-color:#dee2e6;
+  --temp-color:#FF6B35;
+  --humidity-color:#4ECDC4;
+  --gradient-primary:linear-gradient(135deg, #4A90E2 0%, #5BA3F5 100%);
+  --gradient-temp:linear-gradient(135deg, #FF6B35 0%, #FF8C5A 100%);
+  --gradient-humidity:linear-gradient(135deg, #4ECDC4 0%, #6EDDD6 100%);
 }
 
 body.dark{
-  --bg:#0b1220;
-  --text:#f0f2f5;
-  --text-secondary:#b0b8c1;
-  --card:#1a2742;
-  --primary:#4dabf7;
-  --secondary:#adb5bd;
-  --border-color:#495057;
+  --bg:#1E3A5F;
+  --text:#FFFFFF;
+  --text-secondary:#E0F0FF;
+  --card:#2D4A6B;
+  --primary:#5BA3F5;
+  --primary-dark:#4A90E2;
+  --secondary:#7A9BC4;
+  --success:#4ECDC4;
+  --info:#6EDDD6;
+  --border-color:#3A5A7A;
+  --temp-color:#FF8C5A;
+  --humidity-color:#6EDDD6;
+  --gradient-primary:linear-gradient(135deg, #2D4A6B 0%, #3A5A7A 100%);
+  --gradient-temp:linear-gradient(135deg, #FF6B35 0%, #FF8C5A 100%);
+  --gradient-humidity:linear-gradient(135deg, #4ECDC4 0%, #6EDDD6 100%);
+}
+
+/* Glassmorphism utility classes */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+body.dark .glass {
+  background: rgba(45, 74, 107, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+}
+
+body.dark .glass-card {
+  background: rgba(45, 74, 107, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+}
+
+/* Button fixes for dark mode */
+body.dark .btn-light {
+  background: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: #FFFFFF !important;
+}
+
+body.dark .btn-light:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  color: #FFFFFF !important;
+}
+
+body.dark .btn-outline-light {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: #FFFFFF !important;
+}
+
+body.dark .btn-outline-light:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  color: #FFFFFF !important;
 }
 
 body{
@@ -55,7 +127,7 @@ body{
 }
 
 .btn-primary{
-  background:var(--primary);
+  background:var(--gradient-primary);
   border-color:var(--primary);
   font-weight: 600;
   transition: all 0.3s ease;
@@ -64,8 +136,9 @@ body{
 
 .btn-primary:hover{
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
   color: white;
+  background:var(--primary-dark);
 }
 
 .btn-outline-primary{

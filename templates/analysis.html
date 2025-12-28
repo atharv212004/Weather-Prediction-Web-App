@@ -10,35 +10,41 @@
     <link rel="stylesheet" href="/static/css/style.css">
     <style>
       body {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        background: linear-gradient(135deg, #E8F4FD 0%, #D0E8F8 100%);
         min-height: 100vh;
+        color: #1a1a1a;
       }
 
       body.dark {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        color: #f0f2f5;
+        background: linear-gradient(135deg, #0F1F3A 0%, #1E3A5F 100%);
+        color: #FFFFFF;
       }
 
       body.dark * {
-        color: #f0f2f5;
+        color: #FFFFFF;
       }
 
       body.dark h1, body.dark h2, body.dark h3, body.dark h4, body.dark h5, body.dark h6 {
-        color: #f0f2f5;
+        color: #FFFFFF;
+        opacity: 1;
       }
 
-      body.dark p {
-        color: #f0f2f5;
-      }
-
-      body.dark label {
-        color: #f0f2f5;
+      body.dark p, body.dark span, body.dark small, body.dark label {
+        color: #E0F0FF;
+        opacity: 1;
       }
 
       .navbar {
-        background: linear-gradient(90deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95)) !important;
-        backdrop-filter: blur(10px);
+        background: linear-gradient(90deg, rgba(74, 144, 226, 0.85), rgba(91, 163, 245, 0.85)) !important;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      body.dark .navbar {
+        background: linear-gradient(90deg, rgba(45, 74, 107, 0.7), rgba(58, 90, 122, 0.7)) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       }
 
       .navbar-brand {
@@ -48,17 +54,22 @@
       }
 
       .dashboard-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, rgba(74, 144, 226, 0.9), rgba(91, 163, 245, 0.9));
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         color: white;
-        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
         padding: 40px;
         margin-bottom: 30px;
-        box-shadow: 0 15px 45px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 15px 45px rgba(74, 144, 226, 0.3);
       }
 
       body.dark .dashboard-header {
-        background: linear-gradient(135deg, #4a5f8e 0%, #5a3f7a 100%);
-        color: #f0f2f5;
+        background: linear-gradient(135deg, rgba(45, 74, 107, 0.6), rgba(58, 90, 122, 0.6));
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #FFFFFF;
+        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
       }
 
       .dashboard-header h1 {
@@ -82,18 +93,27 @@
       }
 
       .filter-card {
-        background: white;
-        border: none;
-        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
         padding: 25px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
         margin-bottom: 30px;
       }
 
       body.dark .filter-card {
-        background: #1a2a3e;
-        color: #f0f2f5;
-        border: 1px solid #4a5a7a;
+        background: rgba(45, 74, 107, 0.5);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        color: #FFFFFF;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      }
+
+      body.dark .filter-card * {
+        color: #FFFFFF;
       }
 
       .filter-row {
@@ -110,7 +130,7 @@
       }
 
       .form-label {
-        color: #667eea;
+        color: #4A90E2;
         font-weight: 600;
         text-transform: uppercase;
         font-size: 0.85rem;
@@ -119,12 +139,8 @@
       }
 
       body.dark .form-label {
-        color: #a0aec0;
-      }
-      
-
-      body.dark .form-label {
-        color: #a0aec0;
+        color: #E0F0FF;
+        opacity: 1;
       }
 
       .form-select {
@@ -135,23 +151,32 @@
       }
 
       body.dark .form-select {
-        background: #2a2a3e;
-        border: 2px solid #4a4a6a;
-        color: #f0f2f5;
+        background: rgba(45, 74, 107, 0.6);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        color: #FFFFFF;
+        opacity: 1;
       }
 
       body.dark .form-select option {
-        background: #2a2a3e;
-        color: #f0f2f5;
+        background: #2D4A6B;
+        color: #FFFFFF;
+        opacity: 1;
       }
 
       .form-select:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        border-color: #4A90E2;
+        box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+      }
+
+      body.dark .form-select:focus {
+        border-color: #5BA3F5;
+        box-shadow: 0 0 0 0.2rem rgba(91, 163, 245, 0.25);
       }
 
       .btn-load {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #4A90E2 0%, #5BA3F5 100%);
         color: white;
         border: none;
         padding: 12px 32px;
@@ -162,7 +187,7 @@
 
       .btn-load:hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 10px 25px rgba(74, 144, 226, 0.4);
       }
 
       .loading-spinner {
@@ -173,18 +198,27 @@
       }
 
       .chart-card {
-        background: white;
-        border: none;
-        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
         padding: 30px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
         margin-bottom: 30px;
       }
 
       body.dark .chart-card {
-        background: #1a2a3e;
-        color: #f0f2f5;
-        border: 1px solid #4a5a7a;
+        background: rgba(45, 74, 107, 0.5);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        color: #FFFFFF;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      }
+
+      body.dark .chart-card * {
+        color: #FFFFFF;
       }
 
       .chart-header {
@@ -209,11 +243,13 @@
       }
 
       body.dark .chart-header h5 {
-        color: #f0f2f5;
+        color: #FFFFFF;
+        opacity: 1;
       }
 
       body.dark .chart-header {
-        color: #f0f2f5;
+        color: #FFFFFF;
+        opacity: 1;
       }
 
       .metrics-grid {
@@ -224,17 +260,17 @@
       }
 
       .metric-box {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #4A90E2 0%, #5BA3F5 100%);
         color: white;
         padding: 25px;
         border-radius: 15px;
         text-align: center;
-        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
       }
 
       body.dark .metric-box {
-        background: linear-gradient(135deg, #4a5f8e 0%, #5a3f7a 100%);
-        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        background: linear-gradient(135deg, #2D4A6B 0%, #3A5A7A 100%);
+        box-shadow: 0 10px 30px rgba(74, 144, 226, 0.2);
       }
 
       .metric-label {
@@ -287,7 +323,13 @@
       }
 
       body.dark .text-muted {
-        color: #b0b8c1 !important;
+        color: #E0F0FF !important;
+        opacity: 0.9 !important;
+      }
+
+      body.dark .legend-label {
+        color: #E0F0FF;
+        opacity: 1;
       }
 
       @keyframes pulse {
@@ -328,10 +370,10 @@
       <div class="container-fluid">
         <a class="navbar-brand" href="/"><i class="fas fa-cloud"></i> WeatherML</a>
         <div class="d-flex align-items-center gap-2">
-          <button id="themeToggle" class="btn btn-light btn-sm me-2" style="border-radius: 50%; width: 40px; height: 40px;">
+          <button id="themeToggle" class="btn btn-light btn-sm me-2 glass" style="border-radius: 50%; width: 40px; height: 40px; border: 1px solid rgba(255, 255, 255, 0.3);">
             <i class="fas fa-moon"></i>
           </button>
-          <a class="btn btn-light btn-sm" href="/" title="Back to prediction form">
+          <a class="btn btn-light btn-sm glass" href="/" title="Back to prediction form" style="border: 1px solid rgba(255, 255, 255, 0.3);">
             <i class="fas fa-arrow-left me-1"></i> Back
           </a>
         </div>
@@ -556,15 +598,16 @@
               hovertemplate: '<b>Actual</b><br>Date: %{x}<br>Temp: %{y:.1f}°C<extra></extra>'
             };
 
+            const isDark = document.body.classList.contains('dark');
             const tempLayout = {
-              title: { text: `Temperature - ${monthSelect.options[monthSelect.selectedIndex].text} ${year}`, font: { size: 20 } },
-              xaxis: { title: 'Date', showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' },
-              yaxis: { title: 'Temperature (°C)', showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' },
+              title: { text: `Temperature - ${monthSelect.options[monthSelect.selectedIndex].text} ${year}`, font: { size: 20, color: isDark ? '#FFFFFF' : '#1a1a1a' } },
+              xaxis: { title: 'Date', showgrid: true, gridwidth: 1, gridcolor: isDark ? 'rgba(255, 255, 255, 0.2)' : '#e2e8f0', color: isDark ? '#E0F0FF' : '#1a1a1a' },
+              yaxis: { title: 'Temperature (°C)', showgrid: true, gridwidth: 1, gridcolor: isDark ? 'rgba(255, 255, 255, 0.2)' : '#e2e8f0', color: isDark ? '#E0F0FF' : '#1a1a1a' },
               hovermode: 'x unified',
               margin: { t: 50, b: 50, l: 80, r: 40 },
-              plot_bgcolor: 'rgba(245, 247, 250, 0.5)',
-              paper_bgcolor: 'white',
-              font: { family: 'Arial, sans-serif', size: 12 }
+              plot_bgcolor: isDark ? 'rgba(45, 74, 107, 0.4)' : 'rgba(245, 247, 250, 0.5)',
+              paper_bgcolor: isDark ? 'rgba(45, 74, 107, 0.5)' : 'white',
+              font: { family: 'Arial, sans-serif', size: 12, color: isDark ? '#FFFFFF' : '#1a1a1a' }
             };
 
             Plotly.newPlot('tempChart', [tempTrace1, tempTrace2], tempLayout, { responsive: true });
@@ -589,14 +632,14 @@
             };
 
             const humLayout = {
-              title: { text: `Humidity - ${monthSelect.options[monthSelect.selectedIndex].text} ${year}`, font: { size: 20 } },
-              xaxis: { title: 'Date', showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' },
-              yaxis: { title: 'Humidity (%)', showgrid: true, gridwidth: 1, gridcolor: '#e2e8f0' },
+              title: { text: `Humidity - ${monthSelect.options[monthSelect.selectedIndex].text} ${year}`, font: { size: 20, color: isDark ? '#FFFFFF' : '#1a1a1a' } },
+              xaxis: { title: 'Date', showgrid: true, gridwidth: 1, gridcolor: isDark ? 'rgba(255, 255, 255, 0.2)' : '#e2e8f0', color: isDark ? '#E0F0FF' : '#1a1a1a' },
+              yaxis: { title: 'Humidity (%)', showgrid: true, gridwidth: 1, gridcolor: isDark ? 'rgba(255, 255, 255, 0.2)' : '#e2e8f0', color: isDark ? '#E0F0FF' : '#1a1a1a' },
               hovermode: 'x unified',
               margin: { t: 50, b: 50, l: 80, r: 40 },
-              plot_bgcolor: 'rgba(245, 247, 250, 0.5)',
-              paper_bgcolor: 'white',
-              font: { family: 'Arial, sans-serif', size: 12 }
+              plot_bgcolor: isDark ? 'rgba(45, 74, 107, 0.4)' : 'rgba(245, 247, 250, 0.5)',
+              paper_bgcolor: isDark ? 'rgba(45, 74, 107, 0.5)' : 'white',
+              font: { family: 'Arial, sans-serif', size: 12, color: isDark ? '#FFFFFF' : '#1a1a1a' }
             };
 
             Plotly.newPlot('humChart', [humTrace1, humTrace2], humLayout, { responsive: true });
@@ -612,224 +655,6 @@
         });
 
         // Load analysis on page load
-        loadBtn.click();
-      });
-    </script>
-  </body>
-</html>
-      
-      
-
-      <!-- Loading Indicator -->
-      <div id="loadingIndicator" style="display:none;" class="text-center py-5">
-        <div class="spinner-border text-primary" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-        <p class="mt-2">Loading analysis data...</p>
-      </div>
-
-      <!-- Error Alert -->
-      <div id="errorAlert" class="alert alert-danger alert-dismissible fade" role="alert" style="display:none;">
-        <strong>Error:</strong> <span id="errorMessage"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      </div>
-
-      <!-- Charts Container -->
-      <div id="chartsContainer" style="display:none;">
-        <div class="row g-4">
-          <!-- Temperature Chart -->
-          <div class="col-12">
-            <div class="card shadow-sm">
-              <div class="card-header bg-info text-white">
-                <h5 class="mb-0">
-                  <i class="fa-solid fa-temperature-half"></i> Temperature Prediction vs Actual
-                </h5>
-              </div>
-              <div class="card-body">
-                <div id="tempChart" style="height: 400px;"></div>
-                <p class="text-muted small mt-2">
-                  <strong>Blue line:</strong> Model Predictions | <strong>Red dots:</strong> Actual Temperature
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Humidity Chart -->
-          <div class="col-12">
-            <div class="card shadow-sm">
-              <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">
-                  <i class="fa-solid fa-droplet"></i> Humidity Prediction vs Actual
-                </h5>
-              </div>
-              <div class="card-body">
-                <div id="humChart" style="height: 400px;"></div>
-                <p class="text-muted small mt-2">
-                  <strong>Green line:</strong> Model Predictions | <strong>Orange dots:</strong> Actual Humidity
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Statistics -->
-          <div class="col-12">
-            <div class="card shadow-sm">
-              <div class="card-header bg-success text-white">
-                <h5 class="mb-0">
-                  <i class="fa-solid fa-calculator"></i> Performance Metrics
-                </h5>
-              </div>
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-6">
-                    <h6>Temperature</h6>
-                    <p>
-                      <strong>Predictions:</strong> <span id="tempPredCount">0</span> samples<br>
-                      <strong>Avg Predicted:</strong> <span id="tempPredAvg">-</span> °C<br>
-                      <strong>Avg Actual:</strong> <span id="tempActualAvg">-</span> °C
-                    </p>
-                  </div>
-                  <div class="col-md-6">
-                    <h6>Humidity</h6>
-                    <p>
-                      <strong>Predictions:</strong> <span id="humPredCount">0</span> samples<br>
-                      <strong>Avg Predicted:</strong> <span id="humPredAvg">-</span> %<br>
-                      <strong>Avg Actual:</strong> <span id="humActualAvg">-</span> %
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.plot.ly/plotly-2.20.0.min.js"></script>
-    <script src="/static/js/main.js"></script>
-    
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadBtn = document.getElementById('loadAnalysisBtn');
-        const monthSelect = document.getElementById('monthSelect');
-        const yearSelect = document.getElementById('yearSelect');
-        const loadingIndicator = document.getElementById('loadingIndicator');
-        const errorAlert = document.getElementById('errorAlert');
-        const errorMessage = document.getElementById('errorMessage');
-        const chartsContainer = document.getElementById('chartsContainer');
-
-        // Set default to current date
-        const now = new Date();
-        monthSelect.value = now.getMonth() + 1;
-        yearSelect.value = now.getFullYear();
-
-        loadBtn.addEventListener('click', async function() {
-          const month = monthSelect.value;
-          const year = yearSelect.value;
-
-          loadingIndicator.style.display = 'block';
-          chartsContainer.style.display = 'none';
-          errorAlert.style.display = 'none';
-
-          try {
-            const response = await fetch('/api/analysis', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ month: month, year: year })
-            });
-
-            if (!response.ok) {
-              const error = await response.json();
-              throw new Error(error.error || 'Failed to load analysis');
-            }
-
-            const data = await response.json();
-
-            // Plot Temperature Chart
-            const tempTrace1 = {
-              x: data.dates,
-              y: data.predicted_temp,
-              mode: 'lines',
-              name: 'Predicted Temp',
-              line: { color: 'blue', width: 2 }
-            };
-
-            const tempTrace2 = {
-              x: data.dates,
-              y: data.actual_temp,
-              mode: 'markers',
-              name: 'Actual Temp',
-              marker: { color: 'red', size: 8 }
-            };
-
-            const tempLayout = {
-              title: `Temperature - ${monthSelect.options[monthSelect.selectedIndex].text} ${year}`,
-              xaxis: { title: 'Date' },
-              yaxis: { title: 'Temperature (°C)' },
-              hovermode: 'x unified',
-              margin: { t: 30, b: 30, l: 60, r: 30 }
-            };
-
-            Plotly.newPlot('tempChart', [tempTrace1, tempTrace2], tempLayout, { responsive: true });
-
-            // Plot Humidity Chart
-            const humTrace1 = {
-              x: data.dates,
-              y: data.predicted_hum,
-              mode: 'lines',
-              name: 'Predicted Humidity',
-              line: { color: 'green', width: 2 }
-            };
-
-            const humTrace2 = {
-              x: data.dates,
-              y: data.actual_hum,
-              mode: 'markers',
-              name: 'Actual Humidity',
-              marker: { color: 'orange', size: 8 }
-            };
-
-            const humLayout = {
-              title: `Humidity - ${monthSelect.options[monthSelect.selectedIndex].text} ${year}`,
-              xaxis: { title: 'Date' },
-              yaxis: { title: 'Humidity (%)' },
-              hovermode: 'x unified',
-              margin: { t: 30, b: 30, l: 60, r: 30 }
-            };
-
-            Plotly.newPlot('humChart', [humTrace1, humTrace2], humLayout, { responsive: true });
-
-            // Update statistics
-            const avgPredTemp = (data.predicted_temp.reduce((a, b) => a + b, 0) / data.predicted_temp.length).toFixed(2);
-            const avgActualTemp = data.actual_temp.filter(x => x !== null).length > 0 
-              ? (data.actual_temp.filter(x => x !== null).reduce((a, b) => a + b, 0) / data.actual_temp.filter(x => x !== null).length).toFixed(2)
-              : '-';
-            
-            const avgPredHum = (data.predicted_hum.reduce((a, b) => a + b, 0) / data.predicted_hum.length).toFixed(2);
-            const avgActualHum = data.actual_hum.filter(x => x !== null).length > 0 
-              ? (data.actual_hum.filter(x => x !== null).reduce((a, b) => a + b, 0) / data.actual_hum.filter(x => x !== null).length).toFixed(2)
-              : '-';
-
-            document.getElementById('tempPredCount').textContent = data.predicted_temp.length;
-            document.getElementById('tempPredAvg').textContent = avgPredTemp;
-            document.getElementById('tempActualAvg').textContent = avgActualTemp;
-
-            document.getElementById('humPredCount').textContent = data.predicted_hum.length;
-            document.getElementById('humPredAvg').textContent = avgPredHum;
-            document.getElementById('humActualAvg').textContent = avgActualHum;
-
-            chartsContainer.style.display = 'block';
-            loadingIndicator.style.display = 'none';
-
-          } catch (err) {
-            errorMessage.textContent = err.message;
-            errorAlert.style.display = 'block';
-            loadingIndicator.style.display = 'none';
-          }
-        });
-
-        // Load analysis on page load with current month/year
         loadBtn.click();
       });
     </script>
