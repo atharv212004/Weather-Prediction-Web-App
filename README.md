@@ -1,74 +1,138 @@
-# WeatherML - AI-Powered Weather Prediction System
+🌦 Weather Prediction Web Application
+📌 Project Overview
 
-## 📋 Project Overview
+The Weather Prediction Web Application is a machine learning-based web application designed to predict weather conditions using historical meteorological data. The system analyzes weather variables such as temperature, humidity, and atmospheric conditions to generate predictions through a trained machine learning model.
 
-**WeatherML** is an intelligent, web-based weather forecasting application that leverages machine learning to predict temperature and humidity for any global location and date. Built with Flask backend and modern responsive frontend, it provides accurate predictions using RandomForest algorithms trained on historical weather data.
+Weather forecasting uses data analysis and computational models to estimate future atmospheric conditions based on historical observations and environmental factors.
 
-### ✨ Key Features
-- 🌍 **Global Coverage**: Support for any worldwide location using latitude/longitude coordinates
-- 🤖 **AI-Powered Predictions**: RandomForest machine learning models for accurate forecasts
-- 📅 **Extended Forecast Range**: Predictions from 1980 to 2035 (55+ years range)
-- 🌓 **Dark Mode Support**: Full dark/light theme with persistent user preference
-- 📊 **Advanced Analytics**: Interactive dashboard comparing predicted vs. actual weather data
-- 🔍 **Smart Location Input**: Autocomplete city names with automatic coordinate detection
-- ⚡ **Comprehensive Validation**: Real-time input validation with intelligent error messages
-- 📱 **Responsive Design**: Optimized for desktop and tablet devices
-- ⚙️ **Production-Ready**: Robust error handling and performance optimization
+This project integrates machine learning, data preprocessing, and web development to build an interactive system where users can input weather parameters and receive predictions through a web interface.
 
-This project is an intelligent Flask web app that uses trained ML models to predict temperature and humidity for any location and date.
+🎯 Project Objectives
 
-Features:
-- Enter a location or use browser geolocation (permission required)
-- Date picker to select the desired date
-- Dark / Light theme toggle
-- Output page shows temperature, humidity, and wind with icons
-- Analysis page shows feature importances
+• Predict weather conditions using machine learning models
+• Build an interactive web interface for predictions
+• Analyze weather data using data preprocessing and feature engineering
+• Deploy the trained model through a web application
+• Demonstrate how machine learning can be used for environmental forecasting
 
-Quick start
-1. Create a virtual environment and install requirements:
+📂 Project Structure
+Weather-Prediction-Web-App
+│
+├── data/                 # Dataset used for training the model
+├── models/               # Trained machine learning models
+├── src/                  # Core source code
+├── static/               # CSS, images, and frontend assets
+├── templates/            # HTML templates for the web interface
+├── README.md             # Project documentation
+├── DOCUMENTATION.md      # Detailed project documentation
+├── EXPLANATION.txt       # Project explanation
+└── REPORT_1_INTRODUCTION.md
+🔎 Machine Learning Workflow
+1️⃣ Data Collection
 
-```powershell
-python -m venv .venv; .\.venv\Scripts\activate; pip install -r requirements.txt
-```
+Historical weather data is collected containing attributes such as:
 
-2. Place your dataset CSV (or use the attached file) and train the model:
+Temperature
 
-```powershell
-python train_model.py --csv "C:\Users\91932\Downloads\Global_Weather_5Years_2000Rows.csv"
-```
+Humidity
 
-This saves `model.joblib` in the project folder.
+Wind Speed
 
-3. Run the Flask app:
+Pressure
 
-```powershell
-python app.py
-```
+Weather condition
 
-Open http://127.0.0.1:5000 in your browser.
+Machine learning models can learn relationships between these weather variables to predict future conditions.
 
-Notes and customization
-- The training script attempts to auto-detect common column names. If it fails, open `train_model.py` and adjust the column name lists.
-- The ML model used is a MultiOutput RandomForestRegressor (robust and suitable for tabular data). You can change it to XGBoost or LightGBM for higher accuracy.
-- The front-end uses Nominatim (OpenStreetMap) for reverse geocoding. For production use, consider a proper geocoding API with rate limits and API key.
+2️⃣ Data Preprocessing
 
-New workflow for full required pipeline
-1. Clean the raw CSV into standardized `data/cleaned.csv`:
+Steps performed:
 
-```powershell
-python -m src.data.cleaning "C:\Users\91932\Downloads\Global_Weather_5Years_2000Rows.csv"
-```
+• Data cleaning
+• Handling missing values
+• Feature engineering
+• Data normalization
 
-2. Train per-target models and scaler (saves artifacts under `models/`):
+3️⃣ Model Training
 
-```powershell
-python -m src.models.train "data/cleaned.csv"
-```
+The machine learning model is trained using historical weather data to detect patterns between atmospheric variables.
 
-3. Start the app (ensures `models/` and `data/cleaned.csv` exist):
+Common algorithms used in weather prediction systems include:
 
-```powershell
-python app.py
-```
+Decision Trees
 
-Open http://127.0.0.1:5000 and use the input form (or `input.html`).
+Random Forest
+
+Regression models
+
+Classification algorithms
+
+These models are implemented using Python ML libraries such as scikit-learn, which provides algorithms for classification, regression, and clustering.
+
+🌐 Web Application
+
+The trained machine learning model is integrated into a web application interface.
+
+Users can:
+
+• Enter weather parameters
+• Submit the input through the web interface
+• Receive predicted weather conditions
+
+The application architecture includes:
+
+Backend: Python
+
+Machine Learning Model
+
+Frontend: HTML / CSS
+
+Web framework integration
+
+🛠 Technologies Used
+
+Programming Language
+
+Python
+
+Libraries
+
+Pandas
+
+NumPy
+
+Scikit-learn
+
+Matplotlib
+
+Web Development
+
+HTML
+
+CSS
+
+Flask / Python backend
+
+Tools
+
+Jupyter Notebook
+
+Git
+
+GitHub
+
+📊 Applications
+
+This system can be useful for:
+
+• Weather monitoring systems
+• Environmental analysis
+• Agriculture planning
+• Climate data analysis
+• Educational machine learning demonstrations
+
+🔗 Project Repository
+
+GitHub Repository:
+
+https://github.com/atharv212004/Weather-Prediction-Web-App
