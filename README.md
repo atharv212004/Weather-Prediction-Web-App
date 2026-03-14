@@ -133,6 +133,5 @@ This system can be useful for:
 
 🔗 Project Repository
 
-GitHub Repository:
-
-https://github.com/atharv212004/Weather-Prediction-Web-App
+link:
+https://weather-prediction-web-app.onrender.com
